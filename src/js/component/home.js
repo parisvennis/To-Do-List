@@ -1,24 +1,47 @@
 import React from "react";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
-
 //create your first component
-export function Home() {
-	return (
-		<div className="text-center mt-5">
-			<h1>Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
-		</div>
-	);
+export class Home extends React.Component {
+	constructor() {
+		super();
+		this.state = {
+			inputValue: "",
+			liList: []
+		};
+	}
+
+	handleKeyDown(event) {
+		let newArray = [...this.state.liList];
+		if (event.keyCode === 13) {
+			newArray.push(this.state.inputValue);
+			this.setState({ liList: newArray });
+		}
+	}
+
+	render() {
+		console.log(this.state.liList);
+		return (
+			<div className="fullContainer">
+				<h1>todos</h1>
+				<div className="container">
+					<div className="fullCard">
+						<input
+							type="text"
+							value={this.state.inputValue}
+							onKeyDown={() => this.handleKeyDown(event)}
+							onChange={() =>
+								this.setState({
+									inputValue: event.target.value
+								})
+							}
+						/>
+						<ul className="list">
+							<li>Walk</li>
+							<li>Eat</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		);
+	}
 }
