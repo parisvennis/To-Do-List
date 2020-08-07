@@ -10,13 +10,20 @@ export class Home extends React.Component {
 		};
 	}
 
-	handleKeyDown(event) {
+	handleKeyUp = event => {
 		let newArray = [...this.state.liList];
 		if (event.keyCode === 13) {
 			newArray.push(this.state.inputValue);
-			this.setState({ liList: newArray });
+			this.setState({ liList: newArray, inputValue: "" });
 		}
-	}
+	};
+
+	deleteTask = i => {
+		var newLiList = this.state.liList.filter(
+			task => task != this.state.liList[i]
+		);
+		this.setState({ liList: newLiList });
+	};
 
 	render() {
 		console.log(this.state.liList);
@@ -28,16 +35,27 @@ export class Home extends React.Component {
 						<input
 							type="text"
 							value={this.state.inputValue}
-							onKeyDown={() => this.handleKeyDown(event)}
 							onChange={() =>
 								this.setState({
 									inputValue: event.target.value
 								})
 							}
+							onKeyUp={() => this.handleKeyUp(event)}
 						/>
+
 						<ul className="list">
-							<li>Walk</li>
-							<li>Eat</li>
+							{this.state.liList.map((task, i) => (
+								<li key={i}>
+									{task}
+									<span onClick={() => this.deleteTask(i)}>
+										{" "}
+										<i
+											className="fa fa-trash"
+											aria-hidden="true"
+										/>{" "}
+									</span>
+								</li>
+							))}
 						</ul>
 					</div>
 				</div>
